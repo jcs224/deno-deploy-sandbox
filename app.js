@@ -1,5 +1,5 @@
 import { Application, Router } from 'https://deno.land/x/oak@v7.5.0/mod.ts'
-import { OakSession, WebdisStore } from '../session-2/mod.ts'
+import { OakSession, WebdisStore } from 'https://deno.land/x/sessions@v1.4.0/mod.ts'
 import CouchService from './Services/CouchService.js'
 import { 
   registerView, 
