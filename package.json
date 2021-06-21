@@ -1,0 +1,31 @@
+{
+  "name": "deno-couchdb-webdis",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Helpers.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jcs224/deno-deploy-sandbox.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jcs224/deno-deploy-sandbox/issues"
+  },
+  "homepage": "https://github.com/jcs224/deno-deploy-sandbox#readme",
+  "dependencies": {
+    "@inertiajs/inertia": "^0.9.2",
+    "@inertiajs/inertia-vue3": "^0.4.7",
+    "@inertiajs/progress": "^0.2.5",
+    "vue": "^3.1.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^1.2.3",
+    "@vue/compiler-sfc": "^3.1.1",
+    "vite": "^2.3.8"
+  }
+}

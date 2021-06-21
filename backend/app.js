@@ -8,6 +8,7 @@ import {
   login
 } from './Controllers/AuthController.js'
 import State from './State.js'
+import { inertiaRender } from './Middleware/Inertia.js'
 
 const app = new Application()
 const store = new WebdisStore({
@@ -30,6 +31,14 @@ router.get('/register', registerView)
     }
   }).get('/', (ctx) => {
     ctx.response.body = 'hey there, go to /register'
+  }).get('/inertia/1', async (ctx, next) => {
+    await inertiaRender(ctx, next, 'PageOne', {
+      hello: 'world'
+    })
+  }).get('/inertia/2', async (ctx, next) => {
+    await inertiaRender(ctx, next, 'PageTwo', {
+      hey: 'there'
+    })
   })
 
 app.use(router.routes())
