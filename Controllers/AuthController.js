@@ -12,8 +12,7 @@ export function registerView(ctx) {
 }
 
 export async function register(ctx) {
-  const requestBody = await ctx.request.body().value
-  const params = parseFormParams(requestBody)
+  const params = await parseFormParams(ctx)
   
   const passHash = bcrypt.hashSync(params.get('password'))
 
@@ -33,8 +32,7 @@ export function loginView(ctx) {
 }
 
 export async function login(ctx) {
-  const requestBody = await ctx.request.body().value
-  const params = parseFormParams(requestBody)
+  const params = await parseFormParams(ctx)
 
   const response = await State.couch.call('deno/_find', {
     method: 'POST'
@@ -58,13 +56,12 @@ export async function login(ctx) {
   if (result) {
     responseString += '\npassword successful!'
     ctx.state.session.set('user_id', userID)
+    ctx.response.redirect('/dashboard')
   } else {
-    responseString += '\nbad password...'
+    ctx.response.redirect('/login')
   }
 
  } else {
-  responseString = 'could not find user'
+  ctx.response.redirect('/login')
  }
-
- ctx.response.body = responseString
 }
