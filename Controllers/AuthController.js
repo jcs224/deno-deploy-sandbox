@@ -44,17 +44,12 @@ export async function login(ctx) {
     }
  })
 
- let responseString = ''
-
  if (response.docs.length > 0) {
   const userID = response.docs[0]._id
-  
-  responseString = 'found user ' + userID
 
   const result = bcrypt.compareSync(params.get('password'), response.docs[0].password)
 
   if (result) {
-    responseString += '\npassword successful!'
     ctx.state.session.set('user_id', userID)
     ctx.response.redirect('/dashboard')
   } else {
