@@ -3,16 +3,17 @@ export default class {
     this.url = url
   }
 
-  async call(endpoint, meta, payload) {
-
+  async call(endpoint, meta = {
+    method: 'GET'
+  }, payload = {}) {
     const newMeta = {
-      method: meta.method || 'GET',
+      method: meta.method,
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
         ...meta.headers,
       },
-      body: JSON.stringify(payload)
+      body: meta.method !== 'GET' ? JSON.stringify(payload) : null
     }
 
     let response = null

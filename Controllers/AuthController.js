@@ -27,8 +27,18 @@ export async function register(ctx) {
   ctx.response.redirect('/login')
 }
 
-export function loginView(ctx) {
-  ctx.response.body = Layout(LoginView)
+export async function loginView(ctx) {
+
+  if (await ctx.state.session.get('user_id') !== undefined) {
+    const userID = await ctx.state.session.get('user_id')
+    const userLookup = await State.couch.call(`deno/${userID}`)
+
+    ctx.response.redirect('/dashboard')
+  } else {
+    ctx.response.body = Layout(LoginView)
+  }
+
+  
 }
 
 export async function login(ctx) {

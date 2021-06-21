@@ -22,8 +22,12 @@ router.get('/register', registerView)
   .post('/register', register)
   .get('/login', loginView)
   .post('/login', login)
-  .get('/dashboard', (ctx) => {
-    ctx.response.body = 'found the dashboard!'
+  .get('/dashboard', async (ctx) => {
+    if (await ctx.state.session.get('user_id') !== undefined) {
+      ctx.response.body = 'found the dashboard!'
+    } else {
+      ctx.response.redirect('/login')
+    }
   }).get('/', (ctx) => {
     ctx.response.body = 'hey there, go to /register'
   })
