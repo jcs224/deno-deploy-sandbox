@@ -23,7 +23,7 @@ router.get('/register', registerView)
   .get('/login', loginView)
   .post('/login', login)
   .get('/dashboard', (ctx) => {
-
+    ctx.response.body = 'found the dashboard!'
   }).get('/', (ctx) => {
     ctx.response.body = 'hey there, go to /register'
   })

@@ -20,6 +20,7 @@ export async function register(ctx) {
   await State.couch.call('deno/user_'+v4.generate(), {
     method: 'PUT'
   }, {
+    type: 'user',
     email: params.get('email'),
     password: passHash
   })
@@ -52,7 +53,7 @@ export async function login(ctx) {
   
   responseString = 'found user ' + userID
 
-  const result = await bcrypt.compareSync(params.get('password'), response.docs[0].password)
+  const result = bcrypt.compareSync(params.get('password'), response.docs[0].password)
 
   if (result) {
     responseString += '\npassword successful!'
