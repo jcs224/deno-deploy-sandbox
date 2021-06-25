@@ -8,8 +8,7 @@ import {
   login
 } from './Controllers/AuthController.js'
 import State from './State.js'
-// import { inertiaRender } from './Middleware/Inertia.js'
-import { Inertia } from './Inertia/mod.js'
+import { Inertia } from 'https://deno.land/x/oak_inertia@v0.1.0/mod.ts'
 
 const app = new Application()
 const store = new WebdisStore({
