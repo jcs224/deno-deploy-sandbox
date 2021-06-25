@@ -1,0 +1,1 @@
+import{r as e,o as a,a as r,b as n,t as s,d as t,w as l,F as o}from"./vendor.fe82a25e.js";const i={props:{hello:String}},f=t("h1",null,"Hey, page 1!",-1),u=n("Page 2");i.render=function(i,d,p,h,c,g){const m=e("inertia-link");return a(),r(o,null,[f,n(" "+s(p.hello)+" ",1),t(m,{href:"/inertia/2"},{default:l((()=>[u])),_:1})],64)};export default i;

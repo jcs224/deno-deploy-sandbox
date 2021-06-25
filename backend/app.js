@@ -9,8 +9,29 @@ import {
 } from './Controllers/AuthController.js'
 import State from './State.js'
 import { Inertia } from 'https://deno.land/x/oak_inertia@v0.1.0/mod.ts'
+import mime from 'https://cdn.skypack.dev/mime-types';
+
+const mediaPath = Deno.env.get('PUBLIC_ASSET_PATH')+'/public'
+const manifest = JSON.parse(await (await fetch(mediaPath + '/manifest.json')).text())
+
+const manifestEntries = []
+
+for (const [key, value] of Object.entries(manifest)) {
+  manifestEntries.push(value.file)
+}
 
 const app = new Application()
+
+app.use(async (ctx, next) => {
+
+  if (manifestEntries.includes(ctx.request.url.pathname.substr(1))) {
+    ctx.response.body = await (await fetch(mediaPath + ctx.request.url.pathname)).text()
+    ctx.response.headers.set('Content-Type', mime.lookup(ctx.request.url.pathname))
+  }
+
+  await next()
+})
+
 const store = new WebdisStore({
   url: Deno.env.get('WEBDIS_URL')
 })
@@ -24,8 +45,12 @@ new Inertia(app, /*html*/`
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Deno Deploy | CouchDB | Webdis | InertiaJS</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+  ${Deno.env.get('ENVIRONMENT') == 'production' ? /*html*/`
+  <script type="module" src="/${ manifest['frontend/app.js']['file'] }"></script>
+  ` : /*html*/`
   <script type="module" src="http://localhost:3000/@vite/client"></script>
-  <script type="module" src="http://localhost:3000/frontend/app.js"></script>  
+  <script type="module" src="http://localhost:3000/frontend/app.js"></script>
+  `}
 </head>
 <body>
   @inertia
