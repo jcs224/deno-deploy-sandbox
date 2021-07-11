@@ -11,26 +11,28 @@ import State from './State.js'
 import { Inertia } from 'https://deno.land/x/oak_inertia@v0.1.0/mod.ts'
 import mime from 'https://cdn.skypack.dev/mime-types';
 
-const mediaPath = Deno.env.get('PUBLIC_ASSET_PATH')+'/public'
-const manifest = JSON.parse(await (await fetch(mediaPath + '/manifest.json')).text())
-
-const manifestEntries = []
-
-for (const [key, value] of Object.entries(manifest)) {
-  manifestEntries.push(value.file)
-}
-
 const app = new Application()
 
-app.use(async (ctx, next) => {
+if (Deno.env.get('ENVIRONMENT') == 'production') {
+  const mediaPath = Deno.env.get('PUBLIC_ASSET_PATH')+'/public'
+  const manifest = JSON.parse(await (await fetch(mediaPath + '/manifest.json')).text())
 
-  if (manifestEntries.includes(ctx.request.url.pathname.substr(1))) {
-    ctx.response.body = await (await fetch(mediaPath + ctx.request.url.pathname)).text()
-    ctx.response.headers.set('Content-Type', mime.lookup(ctx.request.url.pathname))
+  const manifestEntries = []
+
+  for (const [key, value] of Object.entries(manifest)) {
+    manifestEntries.push(value.file)
   }
 
-  await next()
-})
+  app.use(async (ctx, next) => {
+
+    if (manifestEntries.includes(ctx.request.url.pathname.substr(1))) {
+      ctx.response.body = await (await fetch(mediaPath + ctx.request.url.pathname)).text()
+      ctx.response.headers.set('Content-Type', mime.lookup(ctx.request.url.pathname))
+    }
+
+    await next()
+  })
+}
 
 const store = new WebdisStore({
   url: Deno.env.get('WEBDIS_URL')
