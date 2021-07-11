@@ -12,4 +12,9 @@ export default ({ command }) => ({
       input: 'frontend/app.js',
     },
   },
+  server: {
+    fs: {
+      strict: false,
+    }
+  }
 });
