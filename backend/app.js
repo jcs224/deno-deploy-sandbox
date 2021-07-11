@@ -1,5 +1,6 @@
 import { Application, Router } from 'https://deno.land/x/oak@v7.6.2/mod.ts'
-import { OakSession, WebdisStore } from 'https://deno.land/x/sessions@v1.5.2/mod.ts'
+import { OakSession, WebdisStore } from 'https://deno.land/x/sessions@v1.5.4/mod.ts'
+// import { OakSession, WebdisStore } from '../../session-2/mod.ts'
 import CouchService from './Services/CouchService.js'
 import { 
   registerView, 
@@ -68,7 +69,7 @@ router.get('/register', registerView)
   .get('/login', loginView)
   .post('/login', login)
   .get('/dashboard', async (ctx) => {
-    if (await ctx.state.session.get('user_id') !== undefined) {
+    if (await ctx.state.session.has('user_id')) {
       ctx.response.body = 'found the dashboard!'
     } else {
       ctx.response.redirect('/login')
