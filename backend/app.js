@@ -14,9 +14,12 @@ import mime from 'https://cdn.skypack.dev/mime-types';
 
 const app = new Application()
 
+// Production manifest
+let manifest = null
+
 if (Deno.env.get('ENVIRONMENT') == 'production') {
   const mediaPath = Deno.env.get('PUBLIC_ASSET_PATH')
-  const manifest = JSON.parse(await (await fetch(mediaPath + '/manifest.json')).text())
+  manifest = JSON.parse(await (await fetch(mediaPath + '/manifest.json')).text())
 
   const manifestEntries = []
 
@@ -34,6 +37,8 @@ if (Deno.env.get('ENVIRONMENT') == 'production') {
     await next()
   })
 }
+
+// End production manifest
 
 const store = new WebdisStore({
   url: Deno.env.get('WEBDIS_URL')
