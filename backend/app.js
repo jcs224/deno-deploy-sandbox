@@ -15,7 +15,7 @@ import mime from 'https://cdn.skypack.dev/mime-types';
 const app = new Application()
 
 if (Deno.env.get('ENVIRONMENT') == 'production') {
-  const mediaPath = Deno.env.get('PUBLIC_ASSET_PATH')+'/public'
+  const mediaPath = Deno.env.get('PUBLIC_ASSET_PATH')
   const manifest = JSON.parse(await (await fetch(mediaPath + '/manifest.json')).text())
 
   const manifestEntries = []
