@@ -1,5 +1,5 @@
 import { Application, Router } from 'https://deno.land/x/oak@v7.6.2/mod.ts'
-import { OakSession, WebdisStore } from 'https://deno.land/x/sessions@v1.5.4/mod.ts'
+import { Session, WebdisStore } from 'https://deno.land/x/oak_sessions@v1.5.6/mod.ts'
 // import { OakSession, WebdisStore } from '../../session-2/mod.ts'
 import CouchService from './Services/CouchService.js'
 import { 
@@ -38,7 +38,7 @@ if (Deno.env.get('ENVIRONMENT') == 'production') {
 const store = new WebdisStore({
   url: Deno.env.get('WEBDIS_URL')
 })
-new OakSession(app, store)
+new Session(app, store)
 new Inertia(app, /*html*/`
 <!DOCTYPE html>
 <html lang="en">
