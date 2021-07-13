@@ -1,6 +1,6 @@
 import { Application, Router } from 'https://deno.land/x/oak@v7.6.2/mod.ts'
-import { Session, WebdisStore } from 'https://deno.land/x/oak_sessions@v1.5.6/mod.ts'
-// import { OakSession, WebdisStore } from '../../session-2/mod.ts'
+import { Session, WebdisStore } from 'https://deno.land/x/oak_sessions@v1.5.8/mod.ts'
+// import { Session, WebdisStore } from '../../session-2/mod.ts'
 import CouchService from './Services/CouchService.js'
 import { 
   registerView, 
@@ -9,7 +9,8 @@ import {
   login
 } from './Controllers/AuthController.js'
 import State from './State.js'
-import { Inertia } from 'https://deno.land/x/oak_inertia@v0.1.0/mod.ts'
+// import { Inertia } from '../../oak-inertia/mod.ts'
+import { Inertia } from 'https://deno.land/x/oak_inertia@v0.1.4/mod.ts'
 import mime from 'https://cdn.skypack.dev/mime-types';
 
 const app = new Application()
@@ -43,7 +44,7 @@ if (Deno.env.get('ENVIRONMENT') == 'production') {
 const store = new WebdisStore({
   url: Deno.env.get('WEBDIS_URL')
 })
-new Session(app, store)
+new Session(app, store, Deno.env.get('APP_KEY'))
 new Inertia(app, /*html*/`
 <!DOCTYPE html>
 <html lang="en">
@@ -64,7 +65,10 @@ new Inertia(app, /*html*/`
   @inertia
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
 </body>
-</html>`)
+</html>`, () => {
+  return Deno.env.get('INERTIA_VERSION')
+})
+
 State.couch = new CouchService(Deno.env.get('COUCH_URL'))
 
 const router = new Router()
