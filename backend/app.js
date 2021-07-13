@@ -1,5 +1,5 @@
 import { Application, Router } from 'https://deno.land/x/oak@v7.6.2/mod.ts'
-import { Session, WebdisStore } from 'https://deno.land/x/oak_sessions@v1.5.8/mod.ts'
+import { Session, WebdisStore } from 'https://deno.land/x/oak_sessions@v1.5.9/mod.ts'
 // import { Session, WebdisStore } from '../../session-2/mod.ts'
 import CouchService from './Services/CouchService.js'
 import { 
