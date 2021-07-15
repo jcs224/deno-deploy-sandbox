@@ -10,7 +10,7 @@ import {
 } from './Controllers/AuthController.js'
 import State from './State.js'
 // import { Inertia } from '../../oak-inertia/mod.ts'
-import { Inertia } from 'https://deno.land/x/oak_inertia@v0.1.4/mod.ts'
+import { Inertia } from 'https://deno.land/x/oak_inertia@v0.1.5/mod.ts'
 import mime from 'https://cdn.skypack.dev/mime-types';
 
 const app = new Application()
@@ -27,6 +27,8 @@ if (Deno.env.get('ENVIRONMENT') == 'production') {
   for (const [key, value] of Object.entries(manifest)) {
     manifestEntries.push(value.file)
   }
+
+  manifestEntries.push(manifest['frontend/app.js']['css'][0])
 
   app.use(async (ctx, next) => {
 
@@ -53,9 +55,10 @@ new Inertia(app, /*html*/`
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Deno Deploy | CouchDB | Webdis | InertiaJS</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
   ${Deno.env.get('ENVIRONMENT') == 'production' ? /*html*/`
   <script type="module" src="/${ manifest['frontend/app.js']['file'] }"></script>
+  <link href="/${ manifest['frontend/app.js']['css'][0] }" rel="stylesheet">
   ` : /*html*/`
   <script type="module" src="http://localhost:3000/@vite/client"></script>
   <script type="module" src="http://localhost:3000/frontend/app.js"></script>
@@ -63,7 +66,6 @@ new Inertia(app, /*html*/`
 </head>
 <body>
   @inertia
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
 </body>
 </html>`, () => {
   return Deno.env.get('INERTIA_VERSION')

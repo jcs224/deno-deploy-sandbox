@@ -1,8 +1,8 @@
-import vue from '@vitejs/plugin-vue'
+import { createVuePlugin } from 'vite-plugin-vue2'
 
 export default ({ command }) => ({
   plugins: [
-    vue()
+    createVuePlugin()
   ],
   base: command === 'serve' ? '' : '/',
   build: {
