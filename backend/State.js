@@ -1,3 +1,1 @@
-export default {
-  couch: null
-}
+export default {}

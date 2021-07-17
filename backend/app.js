@@ -1,34 +1,27 @@
 import { Application, Router } from 'https://deno.land/x/oak@v7.6.2/mod.ts'
-import { Session, WebdisStore } from 'https://deno.land/x/oak_sessions@v1.5.9/mod.ts'
-// import { Session, WebdisStore } from '../../session-2/mod.ts'
+// import { Session, WebdisStore } from 'https://deno.land/x/oak_sessions@v1.5.9/mod.ts'
+import { Session, WebdisStore } from '../../session-2/mod.ts'
 import CouchService from './Services/CouchService.js'
-import { 
-  registerView, 
-  register,
-  loginView,
-  login
-} from './Controllers/AuthController.js'
+import AuthController from './Controllers/AuthController.js'
 import State from './State.js'
 // import { Inertia } from '../../oak-inertia/mod.ts'
 import { Inertia } from 'https://deno.land/x/oak_inertia@v0.1.5/mod.ts'
-import mime from 'https://cdn.skypack.dev/mime-types';
+import mime from 'https://cdn.skypack.dev/mime-types'
+import {  } from './Helpers.js'
 
 const app = new Application()
 
+let frontendAssetString = null
+
 // Production manifest
-let manifest = null
-
 if (Deno.env.get('ENVIRONMENT') == 'production') {
-  const mediaPath = Deno.env.get('PUBLIC_ASSET_PATH')
-  manifest = JSON.parse(await (await fetch(mediaPath + '/manifest.json')).text())
+  const [manifestFile, manifestEntries] = await parseManifest()
+  manifest = manifestFile
 
-  const manifestEntries = []
-
-  for (const [key, value] of Object.entries(manifest)) {
-    manifestEntries.push(value.file)
-  }
-
-  manifestEntries.push(manifest['frontend/app.js']['css'][0])
+  frontendAssetString = `
+  <script type="module" src="/${ manifest['frontend/app.js']['file'] }"></script>
+  <link href="/${ manifest['frontend/app.js']['css'][0] }" rel="stylesheet">
+  `
 
   app.use(async (ctx, next) => {
 
@@ -39,6 +32,11 @@ if (Deno.env.get('ENVIRONMENT') == 'production') {
 
     await next()
   })
+} else {
+  frontendAssetString = `
+  <script type="module" src="http://localhost:3000/@vite/client"></script>
+  <script type="module" src="http://localhost:3000/frontend/app.js"></script>
+  `
 }
 
 // End production manifest
@@ -56,13 +54,7 @@ new Inertia(app, /*html*/`
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Deno Deploy | CouchDB | Webdis | InertiaJS</title>
   <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
-  ${Deno.env.get('ENVIRONMENT') == 'production' ? /*html*/`
-  <script type="module" src="/${ manifest['frontend/app.js']['file'] }"></script>
-  <link href="/${ manifest['frontend/app.js']['css'][0] }" rel="stylesheet">
-  ` : /*html*/`
-  <script type="module" src="http://localhost:3000/@vite/client"></script>
-  <script type="module" src="http://localhost:3000/frontend/app.js"></script>
-  `}
+  ${ frontendAssetString }
 </head>
 <body>
   @inertia
@@ -75,10 +67,10 @@ State.couch = new CouchService(Deno.env.get('COUCH_URL'))
 
 const router = new Router()
 
-router.get('/register', registerView)
-  .post('/register', register)
-  .get('/login', loginView)
-  .post('/login', login)
+router.get('/register', AuthController.registerView)
+  .post('/register', AuthController.register)
+  .get('/login', AuthController.loginView)
+  .post('/login', AuthController.login)
   .get('/dashboard', async (ctx) => {
     if (await ctx.state.session.has('user_id')) {
       ctx.response.body = 'found the dashboard!'
