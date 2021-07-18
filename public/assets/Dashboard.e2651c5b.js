@@ -1,0 +1,1 @@
+import{L as t}from"./Layout.8d9c6cab.js";import{n}from"./vueComponentNormalizer.9ef17bb1.js";const r={};var o=n({layout:t},(function(){var t=this,n=t.$createElement;return(t._self._c||n)("h1",[t._v("You're in!")])}),[],!1,e,null,null,null);function e(t){for(let n in r)this[n]=r[n]}var u=function(){return o.exports}();export default u;

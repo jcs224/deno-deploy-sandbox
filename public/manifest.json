@@ -1,14 +1,17 @@
 {
   "frontend/app.js": {
-    "file": "assets/app.56a9dc60.js",
+    "file": "assets/app.93b1e730.js",
     "src": "frontend/app.js",
     "isEntry": true,
     "imports": [
       "_vendor.858def14.js"
     ],
     "dynamicImports": [
+      "frontend/Pages/Dashboard.vue",
       "frontend/Pages/PageOne.vue",
-      "frontend/Pages/PageTwo.vue"
+      "frontend/Pages/PageTwo.vue",
+      "frontend/Pages/Auth/Login.vue",
+      "frontend/Pages/Auth/Register.vue"
     ],
     "css": [
       "assets/app.487207e8.css"
@@ -17,23 +20,56 @@
   "_vendor.858def14.js": {
     "file": "assets/vendor.858def14.js"
   },
+  "frontend/Pages/Dashboard.vue": {
+    "file": "assets/Dashboard.e2651c5b.js",
+    "src": "frontend/Pages/Dashboard.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_Layout.8d9c6cab.js",
+      "_vueComponentNormalizer.9ef17bb1.js"
+    ]
+  },
+  "_Layout.8d9c6cab.js": {
+    "file": "assets/Layout.8d9c6cab.js",
+    "imports": [
+      "_vueComponentNormalizer.9ef17bb1.js"
+    ]
+  },
+  "_vueComponentNormalizer.9ef17bb1.js": {
+    "file": "assets/vueComponentNormalizer.9ef17bb1.js"
+  },
   "frontend/Pages/PageOne.vue": {
-    "file": "assets/PageOne.6f83c056.js",
+    "file": "assets/PageOne.89fbc419.js",
     "src": "frontend/Pages/PageOne.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_Layout.6af95ed7.js"
+      "_Layout.8d9c6cab.js",
+      "_vueComponentNormalizer.9ef17bb1.js"
     ]
   },
-  "_Layout.6af95ed7.js": {
-    "file": "assets/Layout.6af95ed7.js"
-  },
   "frontend/Pages/PageTwo.vue": {
-    "file": "assets/PageTwo.1184b6a5.js",
+    "file": "assets/PageTwo.330db9e8.js",
     "src": "frontend/Pages/PageTwo.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_Layout.6af95ed7.js"
+      "_Layout.8d9c6cab.js",
+      "_vueComponentNormalizer.9ef17bb1.js"
+    ]
+  },
+  "frontend/Pages/Auth/Login.vue": {
+    "file": "assets/Login.f468fe9e.js",
+    "src": "frontend/Pages/Auth/Login.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vueComponentNormalizer.9ef17bb1.js"
+    ]
+  },
+  "frontend/Pages/Auth/Register.vue": {
+    "file": "assets/Register.6e08e523.js",
+    "src": "frontend/Pages/Auth/Register.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "_vueComponentNormalizer.9ef17bb1.js"
     ]
   }
 }
