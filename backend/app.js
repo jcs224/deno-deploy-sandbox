@@ -1,15 +1,21 @@
 import { Application, Router } from 'https://deno.land/x/oak@v7.6.2/mod.ts'
-// import { Session, WebdisStore } from 'https://deno.land/x/oak_sessions@v1.5.9/mod.ts'
-import { Session, WebdisStore } from '../../session-2/mod.ts'
+import { Session, WebdisStore } from 'https://deno.land/x/oak_sessions@v1.5.12/mod.ts'
+// import { Session, WebdisStore } from '../../session-2/mod.ts'
 import CouchService from './Services/CouchService.js'
 import AuthController from './Controllers/AuthController.js'
 import State from './State.js'
 // import { Inertia } from '../../oak-inertia/mod.ts'
 import { Inertia } from 'https://deno.land/x/oak_inertia@v0.1.5/mod.ts'
 import mime from 'https://cdn.skypack.dev/mime-types'
-import {  } from './Helpers.js'
 
 const app = new Application()
+
+if (Deno.env.get('DEBUG') == 'true') {
+  console.log('debugging mode on')
+  app.addEventListener('error', (evt) => {
+    console.log(evt.error)
+  })
+}
 
 let frontendAssetString = null
 
@@ -24,7 +30,6 @@ if (Deno.env.get('ENVIRONMENT') == 'production') {
   `
 
   app.use(async (ctx, next) => {
-
     if (manifestEntries.includes(ctx.request.url.pathname.substr(1))) {
       ctx.response.body = await (await fetch(mediaPath + ctx.request.url.pathname)).text()
       ctx.response.headers.set('Content-Type', mime.lookup(ctx.request.url.pathname))
@@ -73,7 +78,7 @@ router.get('/register', AuthController.registerView)
   .post('/login', AuthController.login)
   .get('/dashboard', async (ctx) => {
     if (await ctx.state.session.has('user_id')) {
-      ctx.response.body = 'found the dashboard!'
+      ctx.state.inertia.render('Dashboard')
     } else {
       ctx.response.redirect('/login')
     }

@@ -32,14 +32,15 @@ export default {
     if (await ctx.state.session.has('user_id')) {
       ctx.response.redirect('/dashboard')
     } else {
-      ctx.response.body = Layout(LoginView)
+      ctx.state.inertia.render('Auth/Login')
+      // ctx.response.body = Layout(LoginView)
     }
   },
 
   login: async function(ctx) {
     const params = await parseFormParams(ctx)
 
-  const response = await State.couch.call('deno/_find', {
+    const response = await State.couch.call('deno/_find', {
     method: 'POST'
       }, {
         "selector": {
