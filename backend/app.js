@@ -31,7 +31,7 @@ if (Deno.env.get('ENVIRONMENT') == 'production') {
 
   app.use(async (ctx, next) => {
     if (manifestEntries.includes(ctx.request.url.pathname.substr(1))) {
-      ctx.response.body = await (await fetch(mediaPath + ctx.request.url.pathname)).text()
+      ctx.response.body = await (await fetch(Deno.env.get('PUBLIC_ASSET_PATH') + ctx.request.url.pathname)).text()
       ctx.response.headers.set('Content-Type', mime.lookup(ctx.request.url.pathname))
     }
 
