@@ -36,7 +36,7 @@ export async function parseFormParams(ctx) {
 
 export async function parseManifest() {
   const mediaPath = Deno.env.get('PUBLIC_ASSET_PATH')
-  manifest = JSON.parse(await (await fetch(mediaPath + '/manifest.json')).text())
+  const manifest = JSON.parse(await (await fetch(mediaPath + '/manifest.json')).text())
 
   const manifestEntries = []
 

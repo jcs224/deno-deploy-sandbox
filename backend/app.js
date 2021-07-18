@@ -23,11 +23,10 @@ let frontendAssetString = null
 // Production manifest
 if (Deno.env.get('ENVIRONMENT') == 'production') {
   const [manifestFile, manifestEntries] = await parseManifest()
-  manifest = manifestFile
 
   frontendAssetString = `
-  <script type="module" src="/${ manifest['frontend/app.js']['file'] }"></script>
-  <link href="/${ manifest['frontend/app.js']['css'][0] }" rel="stylesheet">
+  <script type="module" src="/${ manifestFile['frontend/app.js']['file'] }"></script>
+  <link href="/${ manifestFile['frontend/app.js']['css'][0] }" rel="stylesheet">
   `
 
   app.use(async (ctx, next) => {
