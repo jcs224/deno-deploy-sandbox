@@ -1,5 +1,5 @@
 import { Application, Router } from 'https://deno.land/x/oak@v7.6.2/mod.ts'
-import { Session, WebdisStore } from 'https://deno.land/x/oak_sessions@v1.5.12/mod.ts'
+import { Session, WebdisStore } from 'https://deno.land/x/oak_sessions@v2.0.0/mod.ts'
 // import { Session, WebdisStore } from '../../session-2/mod.ts'
 import CouchService from './Services/CouchService.js'
 import AuthController from './Controllers/AuthController.js'
@@ -49,7 +49,7 @@ if (Deno.env.get('ENVIRONMENT') == 'production') {
 const store = new WebdisStore({
   url: Deno.env.get('WEBDIS_URL')
 })
-new Session(app, store, Deno.env.get('APP_KEY'))
+const session = new Session(store)
 new Inertia(app, /*html*/`
 <!DOCTYPE html>
 <html lang="en">
@@ -72,18 +72,25 @@ State.couch = new CouchService(Deno.env.get('COUCH_URL'))
 
 const router = new Router()
 
-router.get('/register', AuthController.registerView)
+router.post('/logout', async (ctx) => {
+  session.deleteSession(ctx.cookies.get('session'))
+
+  ctx.response.redirect('/login')
+}).get('/register', AuthController.registerView)
   .post('/register', AuthController.register)
-  .get('/login', AuthController.loginView)
-  .post('/login', AuthController.login)
-  .get('/dashboard', async (ctx) => {
-    if (await ctx.state.session.has('user_id')) {
+  .get('/login', session.initMiddleware(), AuthController.loginView)
+  .post('/login', session.initMiddleware(), AuthController.login)
+  .get('/dashboard', session.initMiddleware(), async (ctx) => {
+    if (await ctx.session.has('user_id')) {
       ctx.state.inertia.render('Dashboard')
     } else {
       ctx.response.redirect('/login')
     }
   }).get('/', (ctx) => {
-    ctx.response.body = 'hey there, go to /register'
+    ctx.response.body = `<body>
+    hey there!<br>
+    <a href="/login">login</a> or <a href="/register">register</a>
+    </body>`
   }).get('/inertia/1', (ctx) => {
     ctx.state.inertia.render('PageOne', {
       hello: 'world'

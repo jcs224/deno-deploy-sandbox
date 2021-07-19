@@ -23,7 +23,6 @@ export async function parseFormParams(ctx) {
         const formDataPayload = requestBody.value
         const formData = await formDataPayload.read()
         const fields = formData.fields
-        console.log(fields)
 
         for (const prop in fields) {
           params.set(prop, fields[prop])

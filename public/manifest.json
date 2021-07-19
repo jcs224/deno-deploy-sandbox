@@ -1,6 +1,6 @@
 {
   "frontend/app.js": {
-    "file": "assets/app.93b1e730.js",
+    "file": "assets/app.be313102.js",
     "src": "frontend/app.js",
     "isEntry": true,
     "imports": [
@@ -21,16 +21,16 @@
     "file": "assets/vendor.858def14.js"
   },
   "frontend/Pages/Dashboard.vue": {
-    "file": "assets/Dashboard.e2651c5b.js",
+    "file": "assets/Dashboard.24dae4a8.js",
     "src": "frontend/Pages/Dashboard.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_Layout.8d9c6cab.js",
+      "_Layout.343e3309.js",
       "_vueComponentNormalizer.9ef17bb1.js"
     ]
   },
-  "_Layout.8d9c6cab.js": {
-    "file": "assets/Layout.8d9c6cab.js",
+  "_Layout.343e3309.js": {
+    "file": "assets/Layout.343e3309.js",
     "imports": [
       "_vueComponentNormalizer.9ef17bb1.js"
     ]
@@ -39,20 +39,20 @@
     "file": "assets/vueComponentNormalizer.9ef17bb1.js"
   },
   "frontend/Pages/PageOne.vue": {
-    "file": "assets/PageOne.89fbc419.js",
+    "file": "assets/PageOne.c26e1f2b.js",
     "src": "frontend/Pages/PageOne.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_Layout.8d9c6cab.js",
+      "_Layout.343e3309.js",
       "_vueComponentNormalizer.9ef17bb1.js"
     ]
   },
   "frontend/Pages/PageTwo.vue": {
-    "file": "assets/PageTwo.330db9e8.js",
+    "file": "assets/PageTwo.833e31a2.js",
     "src": "frontend/Pages/PageTwo.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_Layout.8d9c6cab.js",
+      "_Layout.343e3309.js",
       "_vueComponentNormalizer.9ef17bb1.js"
     ]
   },

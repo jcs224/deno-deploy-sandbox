@@ -29,7 +29,7 @@ export default {
   },
 
   loginView: async function(ctx) {
-    if (await ctx.state.session.has('user_id')) {
+    if (await ctx.session.has('user_id')) {
       ctx.response.redirect('/dashboard')
     } else {
       ctx.state.inertia.render('Auth/Login')
@@ -56,7 +56,7 @@ export default {
       const result = bcrypt.compareSync(params.get('password'), response.docs[0].password)
 
       if (result) {
-        ctx.state.session.set('user_id', userID)
+        ctx.session.set('user_id', userID)
         ctx.response.redirect('/dashboard')
       } else {
         ctx.response.redirect('/login')
