@@ -5,12 +5,14 @@
       app
     >
       <v-list>
-        <v-list-item link v-for="m in menu" :key="m.name" @click="visit(m.link)">
-          <v-list-item-content>
-            <v-list-item-title>{{ m.name }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        </v-list>
+        <v-list-item-group v-model="group">
+          <v-list-item link v-for="m in menu" :key="m.name" @click="visit(m.link)">
+            <v-list-item-content>
+              <v-list-item-title>{{ m.name }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
     </v-navigation-drawer>
 
     <v-app-bar app>
@@ -31,6 +33,7 @@
   export default {
     data: () => ({ 
       drawer: null,
+      group: null,
       menu: [
         {
           name: 'Dashboard',
@@ -56,6 +59,14 @@
 
       visit(link) {
         this.$inertia.visit(link)
+      }
+    },
+
+    watch: {
+      group() {
+        if (this.$vuetify.breakpoint.mobile) {
+          this.drawer = false
+        }
       }
     }
   }

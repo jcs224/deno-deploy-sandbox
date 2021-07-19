@@ -13,22 +13,26 @@
           md="6"
           lg="4"
         >
-          <v-text-field
-            v-model="email"
-            label="Email"
-          ></v-text-field>
-          <v-text-field
-            v-model="password"
-            label="Password"
-            type="password"
-          ></v-text-field>
+          <v-form @submit.prevent="login">
+            <v-text-field
+              v-model="email"
+              name="email"
+              label="Email"
+            ></v-text-field>
+            <v-text-field
+              v-model="password"
+              name="password"
+              label="Password"
+              type="password"
+            ></v-text-field>
 
-          <v-btn
-            color="primary"
-            @click="login"
-          >
-            Login
-          </v-btn>
+            <v-btn
+              color="primary"
+              type="submit"
+            >
+              Login
+            </v-btn>
+          </v-form>
         </v-col>
       </v-row>
     </v-container>
