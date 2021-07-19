@@ -13,6 +13,14 @@
           md="6"
           lg="4"
         >
+          <v-alert
+            color="red"
+            outlined
+            v-if="errors"
+            dismissible
+          >
+            {{ errors }}
+          </v-alert>
           <v-form @submit.prevent="login">
             <v-text-field
               v-model="email"
@@ -41,6 +49,10 @@
 
 <script>
 export default {
+  props: {
+    errors: String
+  },
+
   data() {
     return {
       email: '',

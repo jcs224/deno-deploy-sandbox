@@ -5,7 +5,7 @@ import CouchService from './Services/CouchService.js'
 import AuthController from './Controllers/AuthController.js'
 import State from './State.js'
 // import { Inertia } from '../../oak-inertia/mod.ts'
-import { Inertia } from 'https://deno.land/x/oak_inertia@v0.2.0/mod.ts'
+import { Inertia } from 'https://deno.land/x/oak_inertia@v0.2.1/mod.ts'
 import mime from 'https://cdn.skypack.dev/mime-types'
 import { parseManifest } from './Helpers.js'
 
@@ -69,6 +69,15 @@ const inertia = new Inertia(/*html*/`
 })
 
 app.use(inertia.initMiddleware())
+
+app.use(async (ctx, next) => {
+  await next()
+  if (ctx.hasOwnProperty('session') && ctx.session.has('errors')) {
+    ctx.inertia.setShared({
+      errors: await ctx.session.get('errors')
+    })
+  }
+})
 
 State.couch = new CouchService(Deno.env.get('COUCH_URL'))
 

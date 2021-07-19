@@ -56,13 +56,15 @@ export default {
       const result = bcrypt.compareSync(params.get('password'), response.docs[0].password)
 
       if (result) {
-        ctx.session.set('user_id', userID)
+        await ctx.session.set('user_id', userID)
         ctx.response.redirect('/dashboard')
       } else {
+        await ctx.session.flash('errors', 'Incorrect email or password.')
         ctx.response.redirect('/login')
       }
 
     } else {
+      await ctx.session.flash('errors', 'Incorrect email or password.')
       ctx.response.redirect('/login')
     }
   }
