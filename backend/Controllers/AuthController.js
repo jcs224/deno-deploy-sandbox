@@ -32,7 +32,7 @@ export default {
     if (await ctx.session.has('user_id')) {
       ctx.response.redirect('/dashboard')
     } else {
-      ctx.state.inertia.render('Auth/Login')
+      ctx.inertia.render('Auth/Login')
       // ctx.response.body = Layout(LoginView)
     }
   },

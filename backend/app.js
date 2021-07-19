@@ -5,7 +5,7 @@ import CouchService from './Services/CouchService.js'
 import AuthController from './Controllers/AuthController.js'
 import State from './State.js'
 // import { Inertia } from '../../oak-inertia/mod.ts'
-import { Inertia } from 'https://deno.land/x/oak_inertia@v0.1.5/mod.ts'
+import { Inertia } from 'https://deno.land/x/oak_inertia@v0.2.0/mod.ts'
 import mime from 'https://cdn.skypack.dev/mime-types'
 import { parseManifest } from './Helpers.js'
 
@@ -50,7 +50,7 @@ const store = new WebdisStore({
   url: Deno.env.get('WEBDIS_URL')
 })
 const session = new Session(store)
-new Inertia(app, /*html*/`
+const inertia = new Inertia(/*html*/`
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -68,6 +68,8 @@ new Inertia(app, /*html*/`
   return Deno.env.get('INERTIA_VERSION')
 })
 
+app.use(inertia.initMiddleware())
+
 State.couch = new CouchService(Deno.env.get('COUCH_URL'))
 
 const router = new Router()
@@ -82,7 +84,7 @@ router.post('/logout', async (ctx) => {
   .post('/login', session.initMiddleware(), AuthController.login)
   .get('/dashboard', session.initMiddleware(), async (ctx) => {
     if (await ctx.session.has('user_id')) {
-      ctx.state.inertia.render('Dashboard')
+      ctx.inertia.render('Dashboard')
     } else {
       ctx.response.redirect('/login')
     }
@@ -92,11 +94,11 @@ router.post('/logout', async (ctx) => {
     <a href="/login">login</a> or <a href="/register">register</a>
     </body>`
   }).get('/inertia/1', (ctx) => {
-    ctx.state.inertia.render('PageOne', {
+    ctx.inertia.render('PageOne', {
       hello: 'world'
     })
   }).get('/inertia/2', (ctx) => {
-    ctx.state.inertia.render('PageTwo', {
+    ctx.inertia.render('PageTwo', {
       hey: 'there'
     })
   })
