@@ -37,6 +37,7 @@
             <v-btn
               color="primary"
               type="submit"
+              :loading="loggingIn"
             >
               Login
             </v-btn>
@@ -56,15 +57,22 @@ export default {
   data() {
     return {
       email: '',
-      password: ''
+      password: '',
+      loggingIn: false,
     }
   },
 
   methods: {
     login() {
+      var self = this
+      this.loggingIn = true
       this.$inertia.post('/login', {
         email: this.email,
         password: this.password
+      }, {
+        onError() {
+          self.loggingIn = false
+        }
       })
     }
   }

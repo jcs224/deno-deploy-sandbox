@@ -20,7 +20,11 @@
 
       <v-toolbar-title>Deno Deploy</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn color="info" @click="logout">Logout</v-btn>
+      <v-btn 
+        color="info" 
+        @click="logout"
+        :loading="loggingOut"
+      >Logout</v-btn>
     </v-app-bar>
 
     <v-main>
@@ -34,6 +38,7 @@
     data: () => ({ 
       drawer: null,
       group: null,
+      loggingOut: false,
       menu: [
         {
           name: 'Dashboard',
@@ -52,6 +57,7 @@
 
     methods: {
       logout() {
+        this.loggingOut = true
         this.$inertia.post('/logout', {
           _skipSession: 'true'
         })
